@@ -1,4 +1,35 @@
 {
-  "name": "md-links",
-  "version": "0.1.0"
+  "name": "betsi12-md-links",
+  "version": "1.0.6",
+  "description": "Markdown Links project",
+  "scripts": {
+    "test": "jest --coverage",
+    "eslint": "eslint --ext .js src/ test/",
+    "pretest": "npm run eslint"
+  },
+  "license": "ISC",
+  "main": "md-links.js",
+  "keywords": [
+    "Markdown",
+    "library",
+    "node",
+    "file",
+    "folder",
+    "validation",
+    "statistics"
+  ],
+  "repository": "https://github.com/Betsi12/SCL009-md-links",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "filehound": "^1.17.0",
+    "jest": "^24.7.1",
+    "marked": "^0.6.2",
+    "node-fetch": "^2.3.0",
+    "eslint": "^5.15.3",
+    "eslint-plugin-jest": "^22.4.1"
+  },
+  "author": "Betsi Salas",
+  "bin": {
+    "md-links": "index.js"
+  }
 }
