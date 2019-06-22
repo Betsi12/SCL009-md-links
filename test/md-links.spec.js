@@ -1,10 +1,11 @@
-const mdLinks = require('../');
+const fs = require('fs')
 
+const markdownLinkExtractor = require('markdown-link-extractor');
 
-describe('mdLinks', () => {
+let markdown = fs.readFileSync(process.argv[2]).toString();
 
-  it('should...', () => {
-    console.log('FIX ME!');
-  });
+let links = markdownLinkExtractor(markdown);
 
+links.forEach(function (link) {
+    console.log(link);
 });

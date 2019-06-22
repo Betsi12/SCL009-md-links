@@ -9,5 +9,8 @@
     "jest": "^24.7.1",
     "markdown-link-extractor": "^1.2.0"
   },
-  "author": "Betsi Salas"
+  "author": "Betsi Salas",
+  "bin": {
+    "md-links": "index.js"
+  }
 }
