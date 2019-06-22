@@ -1,18 +1,13 @@
 {
-  "name": "betsi12-md-links",
-  "author": "Betsi Salas",
+  "name": "md-links",
   "version": "0.1.0",
+  "description": "Markdown Links project",
   "scripts": {
     "test": "jest --coverage"
   },
   "dependencies": {
-    "filehound": "^1.17.0",
     "jest": "^24.7.1",
-    "markdown-link-extractor": "^1.2.0",
-    "marked": "^0.6.2",
-    "node-fetch": "^2.6.0"
+    "markdown-link-extractor": "^1.2.0"
   },
-  "bin": {
-    "md-links": "index.js"
-  }
+  "author": "Betsi Salas"
 }
