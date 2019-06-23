@@ -7,8 +7,4 @@ describe('mdLinks', () => {
     'https://nodejs.org/']);
   });
 
-  it('Debería retornar error ENOENT, si se intenta leer un archivo que no existe (test2.md)', async()  => {
-    await expect(mdLinks.mdLinks('./test2.md')).rejects.toEqual("ENOENT");
   });
-
-});
