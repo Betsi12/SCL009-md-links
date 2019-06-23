@@ -1,6 +1,20 @@
 const fs = require('fs')
+const markdownLinkExtractor = require('markdown-link-extractor');
 
-fs.readFile(process.argv[2],'utf-8', (err, data) => { 
-    if (err) throw err;
-    console.log(data);
-});
+const mdLinks = (path,options)=>{
+    return new Promise((resolve,reject)=>{
+        try{
+            let markdown = fs.readFileSync(path).toString();
+            let links = markdownLinkExtractor(markdown);
+            resolve(links);
+        }
+        catch(error){
+            reject(error);
+        }
+        
+    })
+}
+
+module.exports={
+    mdLinks
+}

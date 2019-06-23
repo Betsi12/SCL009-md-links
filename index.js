@@ -1,19 +1,9 @@
-const mdLinks = require("md-links");
+#!/usr/bin/env node
 
-mdLinks("./some/example.md")
-  .then(links => {
-    // => [{ href, text, file }]
-  })
-  .catch(console.error);
+const mdLinks = require("./md-links");
 
-mdLinks("./some/example.md", { validate: true })
-  .then(links => {
-    // => [{ href, text, file, status, ok }]
-  })
-  .catch(console.error);
-
-mdLinks("./some/dir")
-  .then(links => {
-    // => [{ href, text, file }]
-  })
-  .catch(console.error);
+mdLinks.mdLinks(process.argv[2],false).then((links)=>{
+  links.forEach(function (link) {
+    console.log(link);
+  });
+});
