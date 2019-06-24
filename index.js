@@ -12,12 +12,3 @@ mdLinks.extractLinksFile(process.argv[2])
 })
 .catch(console.error);
 
-let url = "https://www.google.com";
-mdLinks.validateLinks(url)
-  .then(res => {
-    console.log(res);
-  })
-  .catch(error => {
-    console.log(error);
-  });
-s
