@@ -1,7 +1,9 @@
 /*Librerias de node.js usadas */
 const nodepath = require('path');
-const fs = require('fs')
+const fs = require('fs');
 const marked = require('marked');
+const fetch = require('fetch');
+const fetchUrl = fetch.fetchUrl;
 
 /*Función extractLinksFile  extrae los links de un archivo .md
    Se crea una promesa con parametro resolve y reject para leer los archivos y entregar array de links
@@ -40,6 +42,25 @@ const extractLinksFile = (path)=>{
     })
 }
 
-module.exports={
-    extractLinksFile
+/*Función validateLink que permite extraer los links de un archivo .md */
+
+const validateLinks = (url)=>{ 
+    return new Promise ((reject, resolve)=>{
+        fetchUrl(url, function(error, meta, body){
+            if(meta){
+                if(meta.status == 200){
+                    resolve(meta.status.toString());
+                }else{
+                    reject(error);
+                }
+            }
+        })
+    })
 }
+
+module.exports={
+    extractLinksFile,
+    validateLinks
+    
+}
+
