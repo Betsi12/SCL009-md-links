@@ -9,7 +9,8 @@
     "fetch": "^1.1.0",
     "jest": "^24.7.1",
     "markdown-link-extractor": "^1.2.0",
-    "marked": "^0.6.2"
+    "marked": "^0.6.2",
+    "node-fetch": "^2.6.0"
   },
   "author": "Betsi Salas",
   "bin": {
