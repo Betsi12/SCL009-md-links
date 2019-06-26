@@ -5,9 +5,8 @@ const marked = require('marked');
 const fetch = require('node-fetch');
 
 
-/*Función mdLinks 
-- Permite la conexión entre las funciones contruidas
-- Permite la interacción entre index.js y md-links.js*/
+
+/*Función mdLinks para conectar las funciones contruidas y permitir la interacción entre index.js y md-links.js*/
 
 const mdLinks = (path,option) => {
     if(option && option.validate){
@@ -26,10 +25,9 @@ const mdLinks = (path,option) => {
 /*Función extractLinksFile  extrae los links de un archivo .md
    Se crea una promesa con parametro resolve y reject para leer los archivos y entregar array de links
    Se crea un array para guardar los links
-   Se guarda el contenido del archivo path como  string en la variable mardown
-   Se crea un renderer que en caso de la ejecución exitosa de la promesa, sustituirá el renderer por defecto, en vez de convertir
-   los links a html resolvera el arreglo de links.
-   Se guardan los links en el array */
+   Se guarda el contenido del archivo path como  string en la variable marked
+   Se crea un renderer que en caso de la ejecución exitosa de la promesa, sustituirá el renderer por el creado que
+   en vez de convertir los links a html resolvera el arreglo de links.*/
 
    const extractLinksFile = (path)=>{
     return new Promise((resolve,reject)=>{
@@ -63,11 +61,12 @@ const mdLinks = (path,option) => {
     })
 }
 
-/* Función validateLink que permite agregar el status a los links encontrados en un archivo
- Se retorna una Promise.all() donde al arreglo de links se le aplica un map, para que posteriormente
-a cada elemento encontrado se le agregue el status y textstatus. Se crea una nueva promesa, que al usar fetch puedo ir agregando a cada link su status y textStatus
-Con esto, puedo resolver la promesa (resolve) o generar un error (reject)
-*/
+
+/* Función validateLink para agregar el status a los links encontrados en un archivo.
+ Se crea una nueva promesa con  fetch para ir agregando a cada link su status y textStatus, 
+ la promesa se resuelve (resolve) o generar un error (reject).
+ Se retorna una Promise.all() que devuelve el arreglo de links al cual se aplica un map , para agregar a cada link
+ el status y textstatus.*/
 
 const validateLink = (links)=>{
     return Promise.all(links.map(link=>{
@@ -87,7 +86,8 @@ const validateLink = (links)=>{
     }))
 }
 
-/*Función statsLinks que permite realizar el calculo de estadística de un archivo*/
+
+/*Función statsLinks realiza el calculo de estadística de un archivo*/
 
 const statsLinks = (links)=>{
     let hrefLink = [];
