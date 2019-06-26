@@ -88,7 +88,7 @@ const validateLink = (links)=>{
 
 
 /*Función statsLinks que realiza el calculo de estadística de un archivo
-Para la opción --stats se recibe como  parámetros  el arreglo de links, y la opción --validate
+Para la opción stats se recibe como  parámetros  el arreglo de links, y la opción --validate
 Se obtiene el href de los links del arreglo (parametro recibido)con  map(), y se guarda la información en el arreglo hrefArray
 Se usa length para obtener links totales,  se guarda la formación en el objeto responseStats
 Se usa metodo Set calcular los links unicos, que permite sacar los elementos sin repetirlos para guardarlos 
@@ -98,7 +98,8 @@ Se retorna el objeto responseStats
 En el caso de ambas opciones --stats --validate
  Si se ingresa la opción --validate (los links rotos).
 Se usa filter para los links que devuelvan un status igual a 0 o mayor e igual a 400.
-Se retorna el objeto responseStats con linksTotal, linksUnique y linksBroken*/
+Se retorna el objeto responseStats con linksTotal, linksUnique y linksBroken
+*/
 
 const statsLinks = (links, options)=>{
     let hrefArray = [];
@@ -106,7 +107,7 @@ const statsLinks = (links, options)=>{
     hrefArray = links.map(link=>{
         return link.href;
     });
-    responseStats.linksTotal=hrefArray.length;
+    responseStats.linksTotal=hrefLink.length;
     let arraySet= new Set(hrefArray);
     responseStats.linksUnique=arraySet.size;
     if(options && options.validate){
