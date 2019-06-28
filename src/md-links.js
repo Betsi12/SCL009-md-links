@@ -3,13 +3,13 @@ const fs = require('fs');
 const nodepath = require('path');
 const marked = require('marked');
 const fetch = require('node-fetch');
+const filehound = require('filehound');
 
 
+/*Función mdLinks para conectar las funciones contruidas y establecer la interacción entre index.js y md-links.js*/
 
-/*Función mdLinks para conectar las funciones contruidas y permitir la interacción entre index.js y md-links.js*/
-
-const mdLinks = (path,option) => {
-    if(option && option.validate){
+const mdLinks = (path,options) => {
+    if(options && options.validate){
         return new Promise((resolve,reject)=>{
             extractLinksFile(path).then((links)=>{
                 resolve(validateLink(links));
@@ -17,7 +17,19 @@ const mdLinks = (path,option) => {
         })
     }
     else{
-        return extractLinksFile(path);
+        return new Promise((resolve, reject)=>{
+            const files = fileHound.create()
+            .paths(path)
+            .ext('md')
+            .find();
+            files.then(res=>{
+                resolve(Promise.all(res.map(file=>{
+                    return extractLinksFile(file); 
+                })))
+            })
+        })
+        //return extractLinksFile(path);
+
     }
 }
 
@@ -44,7 +56,7 @@ const mdLinks = (path,option) => {
                     const renderer = new marked.Renderer();
                     renderer.link = function(href, title, text){
                         links.push({
-                            href:href,
+                            href:href, 
                             text: text,
                             file: path
                         })
@@ -56,8 +68,7 @@ const mdLinks = (path,option) => {
         }
         catch(error){
             reject(error);
-        }
-        
+        }        
     })
 }
 
@@ -102,14 +113,14 @@ Se retorna el objeto responseStats con linksTotal, linksUnique y linksBroken
 */
 
 const statsLinks = (links, options)=>{
-    let hrefArray = [];
+    let hrefLink = [];
     let responseStats = {};
-    hrefArray = links.map(link=>{
+    hrefLink = links.map(link=>{
         return link.href;
     });
     responseStats.linksTotal=hrefLink.length;
-    let arraySet= new Set(hrefArray);
-    responseStats.linksUnique=arraySet.size;
+    let hrefSet= new Set(hrefLink);
+    responseStats.linksUnique=hrefSet.size;
     if(options && options.validate){
         responseStats.linksBroken = links.filter(link=>{
             return link.status===0 || link.status>=400;
@@ -118,8 +129,17 @@ const statsLinks = (links, options)=>{
     return responseStats;
 }
 
+/*Función extractMdDirectory que permite obtener los archivos .md de un directorio*/
+
+const extractMdDirectory=(path)=>{
+    return fileHound.create()
+    .paths(path)
+    .ext('md')
+    .find();
+}
 module.exports={
     mdLinks,
     validateLink, 
-    statsLinks
+    statsLinks,
+    extractMdDirectory
 }

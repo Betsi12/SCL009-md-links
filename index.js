@@ -30,13 +30,14 @@ else if(process.argv[3]==="--validate"){
     })
     .catch(console.error);
 
-
 }else {
   mdLinks.mdLinks(process.argv[2])
     .then((links) => {
+      links=links.flat();
       links.forEach(function (link) {   
         console.log(`${link.file} ${link.href} ${link.text.substring(0,50)}`);
       }); 
     })
     .catch(console.error);
 }
+
