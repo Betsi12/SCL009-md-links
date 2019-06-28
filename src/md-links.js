@@ -11,30 +11,29 @@ const filehound = require('filehound');
 const mdLinks = (path,options) => {
     if(options && options.validate){
         return new Promise((resolve,reject)=>{
-            extractLinksFile(path).then((links)=>{
+            extractLinksFromFile(path).then((links)=>{
                 resolve(validateLink(links));
             });
         })
     }
     else{
         return new Promise((resolve, reject)=>{
-            const files = fileHound.create()
-            .paths(path)
-            .ext('md')
-            .find();
-            files.then(res=>{
-                resolve(Promise.all(res.map(file=>{
-                    return extractLinksFile(file); 
-                })))
-            })
+            extractMdDirectory(path)
+                .then(res=>{
+                    resolve(Promise.all(res.map(file=>{
+                        return extractLinksFile(file); 
+                    })))
+                })
+                .catch(()=>{
+                    resolve(extractLinksFile(path));
+                })
         })
-        //return extractLinksFile(path);
-
     }
 }
 
-
-/*Función extractLinksFile  extrae los links de un archivo .md
+            
+    
+   /*Función extractLinksFile  extrae los links de un archivo .md
    Se crea una promesa con parametro resolve y reject para leer los archivos y entregar array de links
    Se crea un array para guardar los links
    Se guarda el contenido del archivo path como  string en la variable marked
