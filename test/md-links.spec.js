@@ -10,7 +10,7 @@ describe('mdLinks', () => {
   });
   
   it('Debería retornar error para el archivo prueba2.md', async()  => {
-    await expect(mdLinks.mdLinks('./prueba2.md')).rejects.toEqual("ENOENT");
+    await expect(mdLinks.mdLinks('./miprueba.md')).rejects.toEqual("ENOENT");
   });
 
   it('Debería retornar "Extension no válida" para el archivo text.txt', async()  => {
@@ -33,6 +33,12 @@ describe('mdLinks', () => {
     expect(mdLinks.statsLinks(
     [{href:'https://es.wikipedia.org/wiki/Markdown'},{href: 'https://nodejs.org/'},
     {href: 'https://user-images.githubusercontent.com'}])).toEqual({"linksTotal": 3, "linksUnique": 3});
+  });
+  
+  it('Debería retornar la estadística linksTotal:3, linksUnique:3 y linksBroken:0 para el archivo prueba.md',()=>{
+    expect(mdLinks.statsLinks(
+    [{href:'https://es.wikipedia.org/wiki/Markdown',status:200 },{href: 'https://nodejs.org/', status:200},{href:'https://user-images.githubusercontent.com', status:200}],{validate:true}))
+    .toEqual({linksTotal: 3, linksUnique: 3, linksBroken:0 });
   });
   
 });
