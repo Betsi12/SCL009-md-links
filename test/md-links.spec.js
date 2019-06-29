@@ -40,6 +40,15 @@ describe('mdLinks', () => {
     [{href:'https://es.wikipedia.org/wiki/Markdown',status:200 },{href: 'https://nodejs.org/', status:200},{href:'https://user-images.githubusercontent.com', status:200}],{validate:true}))
     .toEqual({linksTotal: 3, linksUnique: 3, linksBroken:0 });
   });
-  
+
+  it('Deberia retornar 2 links para los archivos en el directorio .\\PruebasMd', async()=>{
+    await expect(mdLinks.mdLinks('.\\PruebasMd')).resolves.toEqual([
+      [{href:'https://es.wikipedia.org/wiki/Markdown', text:'Markdown', file:'PruebasMd\\test1.md'}],
+      [{href:'https://nodejs.org/', text:'Node.js', file:'PruebasMd\\test1.md'}],
+      [{href:'https://es.wikipedia.org/wiki/Markdown', text:'Markdown', file:'PruebasMd\\test2.md' }],
+      [{href:'https://nodejs.org/', text:'Node.js', file:'PruebasMd\\test2.md'}]
+    ]);
+  });
+
 });
 
