@@ -3,9 +3,9 @@
 const mdLinks = require("./src/md-links");
 
 if((process.argv[3]==="--validate" && process.argv[4]==="--stats") || 
-  (process.argv[3]==="--stats" && process.argv[4]==="--validate")){
-  mdLinks.mdLinks(process.argv[2], {validate: true})
-    .then((links)=>{
+    (process.argv[3]==="--stats" && process.argv[4]==="--validate")){
+      mdLinks.mdLinks(process.argv[2], {validate: true})
+     .then((links)=>{
       let responseStats=mdLinks.statsLinks(links, {validate: true});
       console.log(`Total: ${responseStats.linksTotal}`);
       console.log(`Unique: ${responseStats.linksUnique}`);

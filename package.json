@@ -6,6 +6,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
     "fetch": "^1.1.0",
     "filehound": "^1.17.0",
     "jest": "^24.7.1",
