@@ -11,8 +11,22 @@ const fileHound = require('filehound');
 const mdLinks = (path,options) => {
     if(options && options.validate){
         return new Promise((resolve,reject)=>{
-            extractLinksFromFile(path).then((links)=>{
-                resolve(validateLink(links));
+            extractMdDirectory(path)
+                .then((paths)=>{
+                Promise.all(paths.map((pathInDirectory)=>{
+                    return extractLinksFile(pathInDirectory);
+                })).then((linksInDirectory)=>{
+                    Promise.all(linksInDirectory.map((linkInDirectory)=>{
+                        return validateLink(linkInDirectory);
+                    })).then((validateLinks)=>{
+                        resolve(validateLinks);
+                    })
+                });
+                    
+                }).catch(()=>{
+                    extractLinksFile(path).then((links)=>{
+                        resolve(validateLink(links));    
+                })
             });
         })
     }
@@ -30,7 +44,6 @@ const mdLinks = (path,options) => {
         })
     }
 }
-
             
     
    /*Función extractLinksFile  extrae los links de un archivo .md
@@ -78,25 +91,23 @@ const mdLinks = (path,options) => {
  Se retorna una Promise.all() que devuelve el arreglo de links al cual se aplica un map , para agregar a cada link
  el status y textstatus.*/
 
-const validateLink = (links)=>{
-    return Promise.all(links.map(link=>{
-        console.log(links);
+ const validateLink = (links)=>{
+    return Promise.all(links.map(linkToValidate=>{
         return new Promise((resolve,reject)=>{
-            fetch(link.href)
+            fetch(linkToValidate.href)
                 .then(res=>{
-                    link.status = res.status;
-                    link.statusText = res.statusText;
-                    resolve(link);
+                    linkToValidate.status = res.status;
+                    linkToValidate.statusText = res.statusText;
+                    resolve(linkToValidate);
                 })
                 .catch((err)=> {
-                    link.status=0;
-                    link.statusText=err.code;
-                    resolve(link);
+                    linkToValidate.status=0;
+                    linkToValidate.statusText=err.code;
+                    resolve(linkToValidate);
                 })                    
         });
     }))
 }
-
 
 /*Función statsLinks que realiza el calculo de estadística de un archivo
 Para la opción stats se recibe como  parámetros  el arreglo de links, y la opción --validate
@@ -128,6 +139,7 @@ const statsLinks = (links, options)=>{
     }
     return responseStats;
 }
+
 
 /*Función extractMdDirectory que permite obtener los archivos .md de un directorio*/
 
