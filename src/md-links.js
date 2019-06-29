@@ -136,6 +136,7 @@ const statsLinks = (links, options)=>{
         responseStats.linksBroken = links.filter(link=>{
             return link.status===0 || link.status>=400;
         }).length;
+
     }
     return responseStats;
 }
@@ -153,6 +154,7 @@ const extractMdDirectory=(path)=>{
 module.exports={
     mdLinks,
     validateLink, 
-    statsLinks 
+    statsLinks,
+    
     
 }
