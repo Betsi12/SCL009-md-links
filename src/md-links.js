@@ -3,10 +3,10 @@ const fs = require('fs');
 const nodepath = require('path');
 const marked = require('marked');
 const fetch = require('node-fetch');
-const filehound = require('filehound');
+const fileHound = require('filehound');
 
 
-/*Función mdLinks para conectar las funciones contruidas y establecer la interacción entre index.js y md-links.js*/
+/*Función mdLinks conecta las funciones contruidas y establece la interacción entre index.js y md-links.js*/
 
 const mdLinks = (path,options) => {
     if(options && options.validate){
@@ -80,6 +80,7 @@ const mdLinks = (path,options) => {
 
 const validateLink = (links)=>{
     return Promise.all(links.map(link=>{
+        console.log(links);
         return new Promise((resolve,reject)=>{
             fetch(link.href)
                 .then(res=>{
@@ -136,9 +137,10 @@ const extractMdDirectory=(path)=>{
     .ext('md')
     .find();
 }
+
 module.exports={
     mdLinks,
     validateLink, 
-    statsLinks,
-    extractMdDirectory
+    statsLinks 
+    
 }
