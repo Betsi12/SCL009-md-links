@@ -25,6 +25,7 @@ else if(process.argv[3]==="--validate"){
 }else if(process.argv[3]==="--stats"){
   mdLinks.mdLinks(process.argv[2])
     .then((links) => {
+      links=links.flat();
       let responseStats=mdLinks.statsLinks(links);
       console.log(`Total: ${responseStats.linksTotal}`);
       console.log(`Unique: ${responseStats.linksUnique}`);
