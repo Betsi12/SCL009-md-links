@@ -44,11 +44,16 @@ describe('mdLinks', () => {
   it('Deberia retornar 2 links para los archivos en el directorio .\\PruebasMd', async()=>{
     await expect(mdLinks.mdLinks('.\\PruebasMd')).resolves.toEqual([
       [{href:'https://es.wikipedia.org/wiki/Markdown', text:'Markdown', file:'PruebasMd\\test1.md'}],
-      [{href:'https://nodejs.org/', text:'Node.js', file:'PruebasMd\\test1.md'}],
-      [{href:'https://es.wikipedia.org/wiki/Markdown', text:'Markdown', file:'PruebasMd\\test2.md' }],
-      [{href:'https://nodejs.org/', text:'Node.js', file:'PruebasMd\\test2.md'}]
-    ]);
+      [{href:'https://nodejs.org/', text:'Node.js', file:'PruebasMd\\test2.md'}],
+     ]);
   });
+
+  it('Debería retornar 2 links para los archivos del directorio .\\PruebasMd, validando su status y statusText', async () => {
+    await expect(mdLinks.mdLinks('.\\PruebasMd',{validate:true})).resolves.toEqual([
+      [{href:'https://es.wikipedia.org/wiki/Markdown', text:'Markdown', file:'PruebasMd\\test1.md', status:200, statusText:'OK'}],
+      [{href:'https://nodejs.org/', text:'Node.js', file:'PruebasMd\\test2.md', status:200, statusText:'OK' }]      
+    ]);
+  })
 
 });
 
