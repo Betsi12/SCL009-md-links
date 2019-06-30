@@ -157,26 +157,6 @@ const extractMdDirectory=(path)=>{
     .find();
 }
 
-const responseStatusCodesHTTP =(responseStats, links) =>{
-    responseStats.informationResponses = links.filter(link=>{
-        return link.status>=100 && link.status<=199;
-    }).length;
-    responseStats.successfulResponses = links.filter(link=>{
-        return link.status>=200 && link.status<=299;
-    }).length;
-    responseStats.redirectionMessages = links.filter(link=>{
-        return link.status>=300 && link.status<=399;
-    }).length;
-    responseStats.clientErrorResponses = links.filter(link=>{
-        return link.status>=400 && link.status<=499;
-    }).length;
-    responseStats.serverErrorResponses = links.filter(link=>{
-        return link.status>=500 && link.status<=599;
-    }).length;
-    return responseStats;
-}
-
-
 module.exports={
     mdLinks,
     validateLink, 
