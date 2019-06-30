@@ -13,34 +13,38 @@ const mdLinks = (path,options) => {
         return new Promise((resolve,reject)=>{
             extractMdDirectory(path)
                 .then((paths)=>{
-                Promise.all(paths.map((pathInDirectory)=>{
-                    return extractLinksFile(pathInDirectory);
-                })).then((linksInDirectory)=>{
-                    Promise.all(linksInDirectory.map((linkInDirectory)=>{
-                        return validateLink(linkInDirectory);
-                    })).then((validateLinks)=>{
-                        resolve(validateLinks);
-                    })
-                });
-                    
-                }).catch(()=>{
-                    extractLinksFile(path).then((links)=>{
-                        resolve(validateLink(links));    
+                    Promise.all(paths.map((pathInDirectory)=>{                    
+                        return extractLinksFile(pathInDirectory);                    
+                    })).then((linksInDirectory)=>{
+                        Promise.all(linksInDirectory.map((linkInDirectory)=>{                        
+                            return validateLink(linkInDirectory);
+                        })).then((validateLinks)=>{
+                            resolve(validateLinks);
+                        })
+                    });                    
+                    }).catch(()=>{
+                        extractLinksFile(path)
+                        .then((links)=>{
+                            resolve(validateLink(links)); 
                 })
-            });
+            })
         })
     }
     else{
         return new Promise((resolve, reject)=>{
-            extractMdDirectory(path)
+            try{
+                extractMdDirectory(path)
                 .then(res=>{
                     resolve(Promise.all(res.map(file=>{
                         return extractLinksFile(file); 
                     })))
                 })
-                .catch(()=>{
+                .catch(()=>{                   
                     resolve(extractLinksFile(path));
                 })
+            }catch(err){
+                reject(err);
+            }           
         })
     }
 }
@@ -93,7 +97,7 @@ const mdLinks = (path,options) => {
 
  const validateLink = (links)=>{
     return Promise.all(links.map(linkToValidate=>{
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve)=>{
             fetch(linkToValidate.href)
                 .then(res=>{
                     linkToValidate.status = res.status;
@@ -133,13 +137,15 @@ const statsLinks = (links, options)=>{
     let hrefSet= new Set(hrefLink);
     responseStats.linksUnique=hrefSet.size;
     if(options && options.validate){
-        responseStats.linksBroken = links.filter(link=>{
+        responseStats.linksBroken = links.filter(link=>{            
             return link.status===0 || link.status>=400;
         }).length;
-
+        responseStatusCodesHTTP(responseStats, links);
+        
     }
     return responseStats;
 }
+
 
 
 /*Función extractMdDirectory que permite obtener los archivos .md de un directorio*/
@@ -151,10 +157,29 @@ const extractMdDirectory=(path)=>{
     .find();
 }
 
+const responseStatusCodesHTTP =(responseStats, links) =>{
+    responseStats.informationResponses = links.filter(link=>{
+        return link.status>=100 && link.status<=199;
+    }).length;
+    responseStats.successfulResponses = links.filter(link=>{
+        return link.status>=200 && link.status<=299;
+    }).length;
+    responseStats.redirectionMessages = links.filter(link=>{
+        return link.status>=300 && link.status<=399;
+    }).length;
+    responseStats.clientErrorResponses = links.filter(link=>{
+        return link.status>=400 && link.status<=499;
+    }).length;
+    responseStats.serverErrorResponses = links.filter(link=>{
+        return link.status>=500 && link.status<=599;
+    }).length;
+    return responseStats;
+}
+
+
 module.exports={
     mdLinks,
     validateLink, 
     statsLinks,
-    
-    
+    responseStatusCodesHTTP   
 }
