@@ -17,5 +17,19 @@
   "author": "Betsi Salas",
   "bin": {
     "md-links": "index.js"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Betsi12/SCL009-md-links.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Betsi12/SCL009-md-links/issues"
+  },
+  "homepage": "https://github.com/Betsi12/SCL009-md-links#readme"
 }

@@ -122,25 +122,25 @@ en el arreglo arraySet.
 Se usa size(propiedad de Set) para calcular links unicos, y se guarda la información en el objeto responseStats
 Se retorna el objeto responseStats
 En el caso de ambas opciones --stats --validate
- Si se ingresa la opción --validate (los links rotos).
+Si se ingresa la opción --validate (los links rotos).
 Se usa filter para los links que devuelvan un status igual a 0 o mayor e igual a 400.
 Se retorna el objeto responseStats con linksTotal, linksUnique y linksBroken
 */
 
 const statsLinks = (links, options)=>{
-    let hrefLink = [];
+    let hrefArray = [];
     let responseStats = {};
-    hrefLink = links.map(link=>{
+    hrefArray = links.map(link=>{
         return link.href;
     });
-    responseStats.linksTotal=hrefLink.length;
-    let hrefSet= new Set(hrefLink);
-    responseStats.linksUnique=hrefSet.size;
+    responseStats.linksTotal=hrefArray.length;
+    let ArraySet= new Set(hrefArray);
+    responseStats.linksUnique=ArraySet.size;
     if(options && options.validate){
         responseStats.linksBroken = links.filter(link=>{            
             return link.status===0 || link.status>=400;
         }).length;
-        responseStatusCodesHTTP(responseStats, links);
+        responseStatusHTTP(responseStats, links);
         
     }
     return responseStats;
@@ -157,9 +157,29 @@ const extractMdDirectory=(path)=>{
     .find();
 }
 
+const responseStatusHTTP =(responseStats, links) =>{
+    responseStats.informationResponses = links.filter(link=>{
+        return link.status>=100 && link.status<=199;
+    }).length;
+    responseStats.successfulResponses = links.filter(link=>{
+        return link.status>=200 && link.status<=299;
+    }).length;
+    responseStats.redirectionMessages = links.filter(link=>{
+        return link.status>=300 && link.status<=399;
+    }).length;
+    responseStats.clientErrorResponses = links.filter(link=>{
+        return link.status>=400 && link.status<=499;
+    }).length;
+    responseStats.serverErrorResponses = links.filter(link=>{
+        return link.status>=500 && link.status<=599;
+    }).length;
+    return responseStats;
+}
+
+
 module.exports={
     mdLinks,
     validateLink, 
     statsLinks,
-    responseStatusCodesHTTP   
+    responseStatusHTTP   
 }
