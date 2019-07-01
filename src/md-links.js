@@ -23,7 +23,7 @@ const mdLinks = (path,options) => {
                         })
                     });                    
                     }).catch(()=>{
-                        extractLinksFile(path)
+                        extractLinksFile(path) // es un archivo no un directorio
                         .then((links)=>{
                             resolve(validateLink(links)); 
                 })

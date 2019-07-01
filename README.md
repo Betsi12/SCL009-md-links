@@ -82,7 +82,7 @@ Ejemplo: md-links README.md --stats --validate
 
 
 # Documentación técnica
-[Planificación](ttps://github.com/Betsi12/SCL009-md-links/projects/2)
+![Planificación](ttps://github.com/Betsi12/SCL009-md-links/projects/2)
 
 
 # Autor

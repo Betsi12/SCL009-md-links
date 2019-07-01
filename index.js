@@ -30,6 +30,7 @@ if((process.argv[3]==="--validate" && process.argv[4]==="--stats") ||
         }); 
       })
       .catch(console.error);
+      
   }else if(process.argv[3]==="--stats"){
     mdLinks.mdLinks(process.argv[2])
       .then((links) => {
