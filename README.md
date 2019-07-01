@@ -1,5 +1,6 @@
 # betsi12-md-links
 
+
 Es una libreria que extrae los links de archivos .md (markdown) y/o directorios, valida su status (ok, fail) y calcula estadisticas basicas sobre los links (totales, únicos y rotos).
 
 # Instalación
@@ -18,21 +19,20 @@ Se puede ejecutar la librería de la siguiente forma:
 
 md-links <path-to-file.md>
 
-Ejemplo:
+Ejemplo: md-links README.md
 
-$ md-links README.md
+![Ejemplo opción leer README.md](./img/LeerMd.png)
 
-README.md https://es.wikipedia.org/wiki/Markdown Link a Markdown
 
-README.md https://nodejs.org/ Link a nodejs
-
-- Leer un directorio o carpeta
+- Leer carpetas o directorio
 
 md-links "name folder"
 
 Ejemplo:
 
 $ md-links PruebasMd
+
+![Ejemlo Leer carpeta](./img/LeerFolder.png)
 
 Para ambos casos el resultado obtenido es:
 
@@ -44,36 +44,45 @@ Para ambos casos el resultado obtenido es:
 
 --validate
 
-Con esta opción se obtendran elstatus y texto del link validado.
+Con esta opción se obtendran el status y texto del link validado.
 
-Ejemplo:
+Ejemplo: md-links README.md -- validate
 
-$ md-links README.md -- validate
+![Opción --validate](./img/opcion--validate.png)
 
-README.md https://es.wikipedia.org/wiki/Markdown ok 200 Link a Markdown
 
-README.md https://nodejs.org/ fail 404 links a nodejs
+
+
+
+
+
+
 
 --stats
 
 Esta opción muestra un texto con los links totales (Total) y si son unicos (Unique).
 
-$ md-links README.md --stats
+Ejemplo: md-links README.md --stats
 
-Total: 2
-
-Unique: 2
+![Opción --validate](./img/opc--stats.png)
 
 
 
---validate --stats Si se colocan ambas opciones, se obtienen aquellos links rotos (Broken).
 
-$ md-links README.md --stats --validate
-Total: 2
-Unique: 2
-Broken: 1
+
+--validate --stats 
+
+Si se colocan ambas opciones, se obtienen aquellos links rotos (Broken).
+
+Ejemplo: md-links README.md --stats --validate
+
+![Opción --validate--stats](./img/opc--validate--stats.png)
+
+
+
 
 # Documentación técnica
+[Planificación](ttps://github.com/Betsi12/SCL009-md-links/projects/2)
 
 
 # Autor
