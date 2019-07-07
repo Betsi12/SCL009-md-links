@@ -1,6 +1,6 @@
-/*Uso de librerias de node.js*/
+/*Librerias de node.js utilizadas*/
 const fs = require('fs');
-const nodepath = require('path');
+const routepath = require('path');
 const marked = require('marked');
 const fetch = require('node-fetch');
 const fileHound = require('filehound');
@@ -11,10 +11,10 @@ const fileHound = require('filehound');
 const mdLinks = (path,options) => {
     if(options && options.validate){
         return new Promise((resolve,reject)=>{
-            extractMdDirectory(path)
+            readLinksFolder(path)
                 .then((paths)=>{
                     Promise.all(paths.map((pathInDirectory)=>{                    
-                        return extractLinksFile(pathInDirectory);                    
+                        return readLinksFile(pathInDirectory);                    
                     })).then((linksInDirectory)=>{
                         Promise.all(linksInDirectory.map((linkInDirectory)=>{                        
                             return validateLink(linkInDirectory);
@@ -23,7 +23,7 @@ const mdLinks = (path,options) => {
                         })
                     });                    
                     }).catch(()=>{
-                        extractLinksFile(path) // es un archivo no un directorio
+                        readLinksFile(path) // razón de rechazo seria si el path es un archivo.
                         .then((links)=>{
                             resolve(validateLink(links)); 
                 })
@@ -33,14 +33,14 @@ const mdLinks = (path,options) => {
     else{
         return new Promise((resolve, reject)=>{
             try{
-                extractMdDirectory(path)
+                readLinksFolder(path)
                 .then(res=>{
                     resolve(Promise.all(res.map(file=>{
-                        return extractLinksFile(file); 
+                        return readLinksFile(file); 
                     })))
                 })
                 .catch(()=>{                   
-                    resolve(extractLinksFile(path));
+                    resolve(readLinksFile(path));
                 })
             }catch(err){
                 reject(err);
@@ -50,17 +50,17 @@ const mdLinks = (path,options) => {
 }
             
     
-   /*Función extractLinksFile  extrae los links de un archivo .md
+   /*Función readLinksFile  extrae los links de un archivo .md
    Se crea una promesa con parametro resolve y reject para leer los archivos y entregar array de links
    Se crea un array para guardar los links
    Se guarda el contenido del archivo path como  string en la variable marked
    Se crea un renderer que en caso de la ejecución exitosa de la promesa, sustituirá el renderer por el creado que
    en vez de convertir los links a html resolvera el arreglo de links.*/
 
-   const extractLinksFile = (path)=>{
+   const readLinksFile = (path)=>{
     return new Promise((resolve,reject)=>{
         try{
-            if(nodepath.extname(path)!=".md"){
+            if(routepath.extname(path)!=".md"){
                 throw(new Error("Extensión no válida"));
             }
             fs.readFile(path,'utf-8',(err, content)=>{
@@ -99,6 +99,7 @@ const mdLinks = (path,options) => {
     return Promise.all(links.map(linkToValidate=>{
         return new Promise((resolve)=>{
             fetch(linkToValidate.href)
+            
                 .then(res=>{
                     linkToValidate.status = res.status;
                     linkToValidate.statusText = res.statusText;
@@ -113,29 +114,25 @@ const mdLinks = (path,options) => {
     }))
 }
 
-/*Función statsLinks que realiza el calculo de estadística de un archivo
-Para la opción stats se recibe como  parámetros  el arreglo de links, y la opción --validate
-Se obtiene el href de los links del arreglo (parametro recibido)con  map(), y se guarda la información en el arreglo hrefArray
-Se usa length para obtener links totales,  se guarda la formación en el objeto responseStats
-Se usa metodo Set calcular los links unicos, que permite sacar los elementos sin repetirlos para guardarlos 
-en el arreglo arraySet.
-Se usa size(propiedad de Set) para calcular links unicos, y se guarda la información en el objeto responseStats
-Se retorna el objeto responseStats
+/*Función statsLinks que realiza el calculo estadistico de los links de un archivo .md
+Se obtiene el href de los links del arreglo de links recibido como parametro con  map(),se guarda la información en el arreglo hrefLinks
+length para obtener links totales,  se guarda la formación en el objeto responseStats
+Set para sacar los links unicos y se guardan en el arreglo arraySet.
+size(propiedad de Set) para calcular links unicos, y se guarda la información en el objeto responseStats
 En el caso de ambas opciones --stats --validate
-Si se ingresa la opción --validate (los links rotos).
-Se usa filter para los links que devuelvan un status igual a 0 o mayor e igual a 400.
-Se retorna el objeto responseStats con linksTotal, linksUnique y linksBroken
-*/
+filter para los links que devuelvan un status = a 0 Ó >= a 400.
+Se retorna el objeto responseStats con linksTotal, linksUnique y linksBroken 
+más el listado de codigos de respuesta HTTP corresondiente a esos links*/
 
 const statsLinks = (links, options)=>{
-    let hrefArray = [];
+    let hrefLinks = [];
     let responseStats = {};
-    hrefArray = links.map(link=>{
+    hrefLinks = links.map(link=>{
         return link.href;
     });
-    responseStats.linksTotal=hrefArray.length;
-    let ArraySet= new Set(hrefArray);
-    responseStats.linksUnique=ArraySet.size;
+    responseStats.linksTotal=hrefLinks.length;
+    let arraySet= new Set(hrefLinks);
+    responseStats.linksUnique=arraySet.size;
     if(options && options.validate){
         responseStats.linksBroken = links.filter(link=>{            
             return link.status===0 || link.status>=400;
@@ -148,13 +145,13 @@ const statsLinks = (links, options)=>{
 
 
 
-/*Función extractMdDirectory que permite obtener los archivos .md de un directorio*/
+/*Función readLinksFolder imprime todos los archivos .md de un directorio*/
 
-const extractMdDirectory=(path)=>{
+const readLinksFolder=(path)=>{
     return fileHound.create()
     .paths(path)
     .ext('md')
-    .find();
+    .find(); 
 }
 
 const responseStatusHTTP =(responseStats, links) =>{
