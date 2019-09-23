@@ -26,7 +26,7 @@ if((process.argv[3]==="--validate" && process.argv[4]==="--stats") ||
       .then((links) => {
         links=links.flat();
         links.forEach(function (link) {   
-          console.log(`${chalk.bold.yellow(link.file)} ${chalk.bold.blue(link.href)} ${chalk.bold.bgRed(link.status)} ${chalk.bold.bged(link.statusText)} ${chalk.bold.cyan(link.text.substring(0,50))}`);
+          console.log(`${chalk.bold.yellow(link.file)} ${chalk.bold.blue(link.href)} ${chalk.bold.red(link.status)} ${chalk.bold.red(link.statusText)} ${chalk.bold.cyan(link.text.substring(0,50))}`);
         }); 
       })
       .catch(console.error);

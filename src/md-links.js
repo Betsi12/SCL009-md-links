@@ -152,7 +152,9 @@ const readLinksFolder=(path)=>{
     .paths(path)
     .ext('md')
     .find(); 
-}
+} 
+
+/* Establecimiento de codigos de errores de respuesta http*/
 
 const responseStatusHTTP =(responseStats, links) =>{
     responseStats.informationResponses = links.filter(link=>{

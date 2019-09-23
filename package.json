@@ -1,6 +1,6 @@
 {
   "name": "betsi12-md-links",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "description": "Markdown Links project",
   "scripts": {
     "test": "jest --coverage"
