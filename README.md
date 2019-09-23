@@ -2,7 +2,7 @@
 
 Es una libreria que extrae los links de archivos .md (markdown) y/o directorios, valida su status (ok, fail) y calcula estadisticas basicas sobre los links (totales, únicos y rotos).
 
-![Foto referencial](./img/3.png)
+![Foto referencial](./img/Foto-referencial.png)
 
 # Instalación
 
@@ -33,7 +33,7 @@ Ejemplo:
 
 $ md-links PruebasMd
 
-![Ejemlo Leer carpeta](./img/LeerFolder.png)
+![Ejemplo Leer carpeta](./img/LeerFolder.png)
 
 Para ambos casos el resultado obtenido es:
 
@@ -83,7 +83,7 @@ Ejemplo: md-links README.md --stats --validate
 
 
 # Documentación técnica
-![Planificación](ttps://github.com/Betsi12/SCL009-md-links/projects/2)
+![Planificación](https://github.com/Betsi12/SCL009-md-links/projects/2)
 
 
 # Autor
