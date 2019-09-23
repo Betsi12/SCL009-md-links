@@ -1,5 +1,5 @@
 # betsi12-md-links
-![Foto referencial]./img/3.png)
+![Foto referencial](./img/3.png)
 
 
 Es una libreria que extrae los links de archivos .md (markdown) y/o directorios, valida su status (ok, fail) y calcula estadisticas basicas sobre los links (totales, únicos y rotos).
